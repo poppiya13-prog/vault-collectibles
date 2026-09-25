@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE VAULT — ราคาอ้างอิงและตลาดของสะสม</title>
+<meta name="description" content="ฐานข้อมูลราคาอ้างอิงและตลาดซื้อขายฟิกเกอร์สะสมมือสองในไทย">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%2317172B'/%3E%3Ccircle cx='20' cy='20' r='9' fill='none' stroke='%23E7A93C' stroke-width='3'/%3E%3Ccircle cx='20' cy='20' r='2.5' fill='%23E2372C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="strip">ต้นแบบเพื่อทดลองแนวคิด • ราคาในประกาศเป็นตัวอย่าง ไม่มีการตัดเงินจริง • ราคาอ้างอิงภายนอกระบุแหล่งที่มาทุกรายการ</div>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="mark" href="#">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+        <rect x="1" y="1" width="20" height="20" fill="none" stroke="#EDE7DA" stroke-width="1.4"/>
+        <circle cx="11" cy="11" r="4.6" fill="none" stroke="#E7A93C" stroke-width="1.5"/>
+        <circle cx="11" cy="11" r="1.3" fill="#E2372C"/>
+      </svg>
+      THE VAULT
+    </a>
+    <nav class="nav">
+      <button data-pane="prices" class="on">ราคาอ้างอิง</button>
+      <button data-pane="market">ตลาด</button>
+      <button data-pane="saved">ที่บันทึก<span class="count" id="c-fav">0</span></button>
+      <button data-pane="sell">ลงขาย</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <div>
+      <h1>รู้ราคาจริง<br>ก่อนซื้อ ก่อนขาย</h1>
+      <p class="lede">ราคาอ้างอิงจาก eBay, Mercari, Kijiji และ Kleinanzeigen แปลงเป็นเงินบาท แยกสภาพ และบอกชัดว่าอันไหนเป็นราคาตั้งขาย อันไหนคือประกาศที่ปิดไปแล้ว</p>
+      <div class="tally">
+        <div><b id="t-models">0</b><span>รุ่นที่มีราคาอ้างอิง</span></div>
+        <div><b id="t-quotes">0</b><span>ราคาที่เก็บไว้</span></div>
+        <div><b id="t-when">—</b><span>เก็บข้อมูลเมื่อ</span></div>
+      </div>
+    </div>
+    <div class="case">
+      <div class="beam"></div>
+      <svg class="figure" viewBox="0 0 178 230" aria-label="ภาพประกอบหุ่นข้อต่อในตู้โชว์">
+        <ellipse cx="89" cy="214" rx="54" ry="9" fill="#0B0B16" opacity=".85"/>
+        <ellipse cx="89" cy="210" rx="46" ry="7.5" fill="none" stroke="#E7A93C" stroke-width="1" opacity=".5"/>
+        <g fill="#0C0C18" stroke="#3A3A57" stroke-width="1.3" stroke-linejoin="round">
+          <path d="M89 22c8 0 13 6 13 13s-5 13-13 13-13-6-13-13 5-13 13-13z"/>
+          <path d="M71 52h36l7 16-6 40H70l-6-40z"/>
+          <path d="M64 70l-14 30 6 4 16-26z"/><path d="M114 70l14 30-6 4-16-26z"/>
+          <path d="M50 100l-6 32 9 3 9-31z"/><path d="M128 100l6 32-9 3-9-31z"/>
+          <path d="M72 112h14l3 46-4 44H72l-4-44z"/><path d="M92 112h14l4 46-4 44H92l-3-44z"/>
+          <path d="M66 202h20v8H64z"/><path d="M92 202h20v8H90z"/>
+        </g>
+        <g fill="#E7A93C">
+          <circle class="pivot" cx="66" cy="66" r="3.4"/><circle class="pivot" cx="112" cy="66" r="3.4"/>
+          <circle class="pivot" cx="50" cy="99" r="3"/><circle class="pivot" cx="128" cy="99" r="3"/>
+          <circle class="pivot" cx="79" cy="156" r="3"/><circle class="pivot" cx="99" cy="156" r="3"/>
+        </g>
+      </svg>
+      <div class="case-foot">
+        <div>
+          <div class="code" id="hz-code">—</div>
+          <div id="hz-name" style="font-size:15px;font-weight:500">—</div>
+          <div style="font-size:12.5px;color:var(--mute)" id="hz-meta">—</div>
+        </div>
+        <div class="amt" id="hz-amt">—</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band">
+    <div class="wrap band-in">
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="chips"></div>
+      <input class="fld" id="q" type="search" placeholder="ค้นหารุ่น รหัส หรือผู้ผลิต" aria-label="ค้นหา">
+      <div class="sortbox">
+        <label for="sort">เรียงตาม</label>
+        <select class="fld" id="sort">
+          <option value="recent">ล่าสุด</option>
+          <option value="asc">ราคาต่ำ → สูง</option>
+          <option value="desc">ราคาสูง → ต่ำ</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <section class="wrap">
+    <!-- ราคาอ้างอิง -->
+    <div class="pane on" id="pane-prices">
+      <div class="sec-head">
+        <h2>ตารางราคาอ้างอิง</h2>
+        <p>ช่วงราคาคำนวณจากรายการที่ยังตั้งขายอยู่เท่านั้น ประกาศที่ปิดไปแล้วแสดงไว้แต่ไม่นำมาคิด</p>
+      </div>
+      <div class="rowhead"><div>รหัส</div><div>รุ่น</div><div>ใหม่ / ซีล</div><div>มือสอง</div><div>แหล่งอ้างอิง</div></div>
+      <div id="price-rows"></div>
+    </div>
+
+    <!-- ตลาด -->
+    <div class="pane" id="pane-market">
+      <div class="sec-head">
+        <h2>ประกาศขาย</h2>
+        <p>ประกาศทั้งหมดในต้นแบบนี้เป็นตัวอย่าง รูปสินค้าต้องถ่ายจากของจริงโดยผู้ขาย</p>
+      </div>
+      <div class="grid" id="market-grid"></div>
+    </div>
+
+    <!-- ที่บันทึก -->
+    <div class="pane" id="pane-saved">
+      <div class="sec-head"><h2>ของสะสมที่บันทึก</h2><p>กดหัวใจที่ประกาศเพื่อเก็บไว้ดูภายหลัง</p></div>
+      <div class="grid" id="saved-grid"></div>
+    </div>
+
+    <!-- ลงขาย -->
+    <div class="pane" id="pane-sell">
+      <div class="sec-head"><h2>ลงประกาศขาย</h2><p>บันทึกไว้ในเครื่องนี้เท่านั้น ยังไม่ส่งไปที่ไหน</p></div>
+      <form id="sell-form" style="max-width:520px">
+        <label class="fldw">ชื่อรุ่น<input name="name" required placeholder="เช่น Iron Man Mark LXXXV"></label>
+        <label class="fldw">รหัสรุ่น<input name="code" placeholder="เช่น MMS528D30 — ใส่ไว้เพื่อเทียบราคาได้"></label>
+        <label class="fldw">ผู้ผลิต<input name="brand" required value="Hot Toys"></label>
+        <label class="fldw">สเกล<input name="scale" value="1/6"></label>
+        <label class="fldw">สภาพ<select name="condition"><option>มือสอง</option><option>ใหม่ / ซีล</option></select></label>
+        <label class="fldw">ราคา (บาท)<input name="price" type="number" min="0" required placeholder="8500"></label>
+        <label class="fldw">ส่งจาก<input name="location" placeholder="กรุงเทพมหานคร"></label>
+        <label class="fldw">สภาพจริงและตำหนิ<textarea name="description" rows="3" placeholder="ระบุตามจริง เช่น กล่องมีรอยบุบมุมขวา ข้อต่อขาขวาหลวมเล็กน้อย"></textarea></label>
+        <label class="fldw">ชื่อผู้ขาย<input name="seller" required placeholder="ชื่อที่ใช้แสดง"></label>
+        <div class="note">รูปสินค้า: ในเวอร์ชันจริงต้องเป็นรูปที่ผู้ขายถ่ายเอง ไม่ใช้รูปโปรโมตของผู้ผลิต — ทั้งเพราะเป็นงานอันมีลิขสิทธิ์ของเขา และเพราะคนซื้อของมือสองต้องการเห็นตำหนิจริง</div>
+        <button class="btn full" type="submit">บันทึกประกาศ</button>
+      </form>
+    </div>
+
+    <footer>
+      <strong>THE VAULT</strong> · ต้นแบบอิสระเพื่อทดลองแนวคิด ไม่ได้เกี่ยวข้องหรือได้รับอนุญาตจากผู้ผลิต เจ้าของลิขสิทธิ์ หรือเจ้าของเครื่องหมายการค้ารายใด<br>
+      ชื่อรุ่นและชื่อตัวละครใช้เพื่อระบุว่าสินค้าคืออะไรตามจริงเท่านั้น · ราคาอ้างอิงเป็นสแนปช็อต ไม่ใช่ฟีดสด · ราคาทั้งหมดเป็นเงินบาท<br>
+      พบประกาศที่สงสัยว่าเป็นของปลอมหรือละเมิดสิทธิ์ <button id="report-link">แจ้งให้เราตรวจสอบ</button>
+    </footer>
+  </section>
+</main>
+
+<dialog id="dlg"><button class="x" id="dlg-x" aria-label="ปิด">✕</button><div class="dlg" id="dlg-body"></div></dialog>
+<div class="toast" id="toast"></div>
+
+<script src="market-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
